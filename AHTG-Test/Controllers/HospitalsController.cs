@@ -11,8 +11,8 @@ using AHTG_Test.Models;
 
 namespace AHTG_Test.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]    
     public class HospitalsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

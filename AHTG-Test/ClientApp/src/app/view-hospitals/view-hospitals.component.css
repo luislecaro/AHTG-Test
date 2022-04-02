@@ -1,0 +1,14 @@
+.mat-column-number-of-name {
+  width: 150px;
+  text-align: left;
+}
+
+.mat-column-number-of-employees {
+  width: 150px;
+  text-align: right;
+}
+
+.mat-column-state {
+  width: 100px;
+  text-align: center;
+}
