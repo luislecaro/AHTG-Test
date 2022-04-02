@@ -13,5 +13,6 @@ namespace AHTG_Test.Data
         {
 
         }
+        public DbSet<AHTG_Test.Models.Hospital> Hospital { get; set; }
     }
 }
