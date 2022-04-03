@@ -8,15 +8,17 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { HospitalDetailComponent } from './hospital-detail/hospital-detail.component';
+import { ViewHospitalsComponent } from './view-hospitals/view-hospitals.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { ViewHospitalsComponent } from './view-hospitals/view-hospitals.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     NavMenuComponent,
     HomeComponent,
     ViewHospitalsComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    HospitalDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,13 +36,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'view-hospitals', component: ViewHospitalsComponent, canActivate: [AuthorizeGuard] }
+      { path: 'view-hospitals', component: ViewHospitalsComponent, canActivate: [AuthorizeGuard] },
+      { path: 'hospital-detail', component: HospitalDetailComponent, canActivate: [AuthorizeGuard] },
+      { path: 'hospital-detail/:id', component: HospitalDetailComponent, canActivate: [AuthorizeGuard] }
     ]),
     BrowserAnimationsModule,
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCardModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }

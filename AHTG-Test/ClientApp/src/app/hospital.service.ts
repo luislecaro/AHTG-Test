@@ -18,6 +18,10 @@ export class HospitalService {
     return this.http.get<Hospital[]>(this.hospitalsUrl)
   }
 
+  getHospital(id: number): Observable<Hospital> {
+    return this.http.get<Hospital>(this.hospitalsUrl + "/" + id);
+  }
+
   deleteHospital(id: number): Observable<unknown> {
     return this.http.delete(this.hospitalsUrl + "/" + id);
   }

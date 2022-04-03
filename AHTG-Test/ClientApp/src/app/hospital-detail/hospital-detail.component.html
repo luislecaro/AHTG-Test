@@ -1,0 +1,49 @@
+<h1>Hospital Details</h1>
+<div *ngIf="hospital">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Hospital Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <label>Name</label>
+      <br />
+      <input id="hospital-name" [(ngModel)]="hospital.name" placeholder="Hospital name" />
+      <br />
+      <label>Phone number</label>
+      <br />
+      <input id="phone-number" [(ngModel)]="hospital.phoneNumber" placeholder="Phone number" />
+      <br />
+      <label>Number of Employees</label>
+      <br />
+      <input id="number-of-employees" [(ngModel)]="hospital.numberOfEmployees" placeholder="Number of Employees" />
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Address Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <label>Address Line 1</label>
+      <br />
+      <input id="address-line-1" [(ngModel)]="hospital.addressLine1" placeholder="Address Line 1" />
+      <br />
+      <label>Address Line 2</label>
+      <br />
+      <input id="address-line-2" [(ngModel)]="hospital.addressLine2" placeholder="Address Line 2" />
+      <br />
+      <label>City</label>
+      <br />
+      <input id="address-city" [(ngModel)]="hospital.addressCity" placeholder="City" />
+      <br />
+      <label>State</label>
+      <br />
+      <input id="address-city" [(ngModel)]="hospital.addressState" placeholder="State" />
+      <br />
+      <label>Zip Code</label>
+      <br />
+      <input id="address-zip-code" [(ngModel)]="hospital.addressZip" placeholder="ZipCode" />
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
