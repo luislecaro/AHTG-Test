@@ -24,7 +24,7 @@
           <br />
           <mat-form-field>
             <mat-label>Number of Employees</mat-label>
-            <input matInput placeholder="Number of Employees" formControlName="numberOfEmployees" required>
+            <input matInput type="number" placeholder="Number of Employees" formControlName="numberOfEmployees" required>
             <mat-error *ngIf="(form.get('numberOfEmployees'))?.errors?.required">Required</mat-error>
           </mat-form-field>
         </mat-card-content>
@@ -56,14 +56,18 @@
           <br />
           <mat-form-field>
             <mat-label>State</mat-label>
-            <input matInput placeholder="State" formControlName="addressState" required>
+            <!--<input matInput placeholder="State" formControlName="addressState" required>-->
+            <mat-select formControlName="addressState" required>
+              <mat-option *ngFor="let state of states" [value]="state.code">{{state.description}}</mat-option>
+            </mat-select>
             <mat-error *ngIf="(form.get('addressState'))?.errors?.required">Required</mat-error>
           </mat-form-field>
           <br />
           <mat-form-field>
             <mat-label>Zip Code</mat-label>
-            <input matInput placeholder="Zip Code" formControlName="addressZip" required>
+            <input matInput placeholder="Zip Code" formControlName="addressZip" required maxlength="5">
             <mat-error *ngIf="(form.get('addressZip'))?.errors?.required">Required</mat-error>
+            <mat-error *ngIf="(form.get('addressZip'))?.errors?.pattern">Invalid zip code</mat-error>
           </mat-form-field>
         </mat-card-content>
       </mat-card>

@@ -6,6 +6,7 @@ import { Hospital } from '../hospital.model';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { State, States } from '../states';
 
 @Component({
   selector: 'app-hospital-detail',
@@ -18,6 +19,7 @@ export class HospitalDetailComponent implements OnInit {
   form: FormGroup;
   id: number = 0;
   isBusy = false;
+  states: State[] = [];
 
   private addMode = false;
 
@@ -36,11 +38,15 @@ export class HospitalDetailComponent implements OnInit {
       addressLine2: [null, [Validators.required]],
       addressCity: [null, [Validators.required]],
       addressState: [null, [Validators.required]],
-      addressZip: [null, [Validators.required]]
+      addressZip: [null, [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern('^[0-9]{5}')]]
     });
   }
 
   ngOnInit(): void {
+
+    let stateList = States.List;
+    stateList.unshift({ code: null, description: '-- Select a state --' });
+    this.states = stateList;
 
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
