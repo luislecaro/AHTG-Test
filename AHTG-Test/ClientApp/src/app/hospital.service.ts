@@ -22,6 +22,10 @@ export class HospitalService {
     return this.http.get<Hospital>(this.hospitalsUrl + "/" + id);
   }
 
+  updateHospital(id: number, hospital: Hospital) {
+    return this.http.put<Hospital>(this.hospitalsUrl + "/" + id, hospital);
+  }
+
   deleteHospital(id: number): Observable<unknown> {
     return this.http.delete(this.hospitalsUrl + "/" + id);
   }

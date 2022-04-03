@@ -39,6 +39,9 @@ namespace AHTG_Test.Controllers
         {
             var hospital = await _context.Hospital.FindAsync(id);
 
+            // simulate some delay in request
+            await Task.Delay(FAKE_DELAY);
+
             if (hospital == null)
             {
                 return NotFound();
