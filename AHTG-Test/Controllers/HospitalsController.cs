@@ -16,19 +16,24 @@ namespace AHTG_Test.Controllers
     public class HospitalsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostingEnv;
         private const int FAKE_DELAY = 2000;
 
-        public HospitalsController(ApplicationDbContext context)
+        public HospitalsController(ApplicationDbContext context, IWebHostEnvironment hostingEnv)
         {
             _context = context;
+            _hostingEnv = hostingEnv;
         }
 
         // GET: api/Hospitals
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Hospital>>> GetHospital()
         {
-            // simulate some delay in request
-            await Task.Delay(FAKE_DELAY);
+            if (_hostingEnv.IsDevelopment())
+            {
+                // simulate some delay in request
+                await Task.Delay(FAKE_DELAY); 
+            }
 
             return await _context.Hospital.ToListAsync();
         }
@@ -39,8 +44,11 @@ namespace AHTG_Test.Controllers
         {
             var hospital = await _context.Hospital.FindAsync(id);
 
-            // simulate some delay in request
-            await Task.Delay(FAKE_DELAY);
+            if (_hostingEnv.IsDevelopment())
+            {
+                // simulate some delay in request
+                await Task.Delay(FAKE_DELAY);
+            }
 
             if (hospital == null)
             {
@@ -58,6 +66,12 @@ namespace AHTG_Test.Controllers
             if (id != hospital.ID)
             {
                 return BadRequest();
+            }
+
+            if (_hostingEnv.IsDevelopment())
+            {
+                // simulate some delay in request
+                await Task.Delay(FAKE_DELAY);
             }
 
             _context.Entry(hospital).State = EntityState.Modified;
@@ -89,6 +103,12 @@ namespace AHTG_Test.Controllers
             _context.Hospital.Add(hospital);
             await _context.SaveChangesAsync();
 
+            if (_hostingEnv.IsDevelopment())
+            {
+                // simulate some delay in request
+                await Task.Delay(FAKE_DELAY);
+            }
+
             return CreatedAtAction("GetHospital", new { id = hospital.ID }, hospital);
         }
 
@@ -105,8 +125,11 @@ namespace AHTG_Test.Controllers
             _context.Hospital.Remove(hospital);
             await _context.SaveChangesAsync();
 
-            // simulate some delay in request
-            await Task.Delay(FAKE_DELAY);
+            if (_hostingEnv.IsDevelopment())
+            {
+                // simulate some delay in request
+                await Task.Delay(FAKE_DELAY);
+            }
 
             return NoContent();
         }

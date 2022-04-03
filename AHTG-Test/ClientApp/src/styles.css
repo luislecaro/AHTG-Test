@@ -17,3 +17,21 @@ code {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.green-snackbar {
+  background-color: lawngreen;
+  color: black;
+}
+
+  .green-snackbar .mat-simple-snackbar-action {
+      color: black;
+  }
+
+.red-snackbar {
+  background-color: orangered;
+  color: black;
+}
+
+  .red-snackbar .mat-simple-snackbar-action {
+    color: black;
+  }

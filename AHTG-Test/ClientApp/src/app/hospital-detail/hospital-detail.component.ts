@@ -4,7 +4,8 @@ import { Location } from '@angular/common';
 import { HospitalService } from '../hospital.service';
 import { Hospital } from '../hospital.model';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-hospital-detail',
@@ -16,12 +17,16 @@ export class HospitalDetailComponent implements OnInit {
   hospitalObservable: Observable<Hospital> | undefined;
   form: FormGroup;
   id: number = 0;
+  isBusy = false;
+
+  private addMode = false;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private hospitalService: HospitalService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
@@ -36,14 +41,22 @@ export class HospitalDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
-    this.getHospital();
+
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (this.id === 0) {
+      this.addMode = true;
+    }
+    else {
+      this.addMode = false;
+      this.getHospital();
+    }
   }
 
   private getHospital(): void {
-    this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    /*this.hospitalObservable = this.hospitalService.getHospital(id);*/
+    this.isBusy = true;
+
     this.hospitalService.getHospital(this.id).subscribe(hospital => {
       this.form.get('name')?.setValue(hospital.name);
       this.form.get('phoneNumber')?.setValue(hospital.phoneNumber);
@@ -53,12 +66,14 @@ export class HospitalDetailComponent implements OnInit {
       this.form.get('addressCity')?.setValue(hospital.addressCity);
       this.form.get('addressState')?.setValue(hospital.addressState);
       this.form.get('addressZip')?.setValue(hospital.addressZip);
+
+      this.isBusy = false;
     });
   }
 
-  updateHospital() {    
+  submitForm(): void {
 
-    let hospital: Hospital = {
+    const hospital: Hospital = {
       id: this.id,
       name: this.form.get('name')?.value,
       phoneNumber: this.form.get('phoneNumber')?.value,
@@ -70,9 +85,43 @@ export class HospitalDetailComponent implements OnInit {
       addressZip: this.form.get('addressZip')?.value,
     };
 
+    if (this.addMode) {
+      this.addHospital(hospital);
+    }
+    else {
+      this.updateHospital(hospital);
+    }
+  }
+
+  private addHospital(hospital: Hospital): void {
+
+    this.isBusy = true;
+
+    this.hospitalService.addHospital(hospital).subscribe(
+      () => {
+        this.isBusy = false;
+        this.snackBar.open('Added successfully', 'OK', { duration: 3000, panelClass: ['green-snackbar'] });
+      },
+      (error) => {
+        this.isBusy = false;
+        this.snackBar.open('An error occurred', 'OK', { duration: 3000, panelClass: ['red-snackbar'] });
+      }
+    );
+  }
+
+  private updateHospital(hospital: Hospital): void {
+
+    this.isBusy = true;
+
     this.hospitalService.updateHospital(this.id, hospital).subscribe(
-      () => { },
-      (error) => { }
+      () => {
+        this.isBusy = false;
+        this.snackBar.open('Updated successfully', 'OK', { duration: 3000, panelClass: ['green-snackbar'] });
+      },
+      (error) => {
+        this.isBusy = false;
+        this.snackBar.open('An error occurred', 'OK', { duration: 3000, panelClass: ['red-snackbar'] });
+      }
     );
   }
 
