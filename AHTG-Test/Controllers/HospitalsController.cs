@@ -10,12 +10,13 @@ using AHTG_Test.Data;
 using AHTG_Test.Models;
 
 namespace AHTG_Test.Controllers
-{
+{    
     [ApiController]
     [Route("api/[controller]")]    
     public class HospitalsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private const int FAKE_DELAY = 2000;
 
         public HospitalsController(ApplicationDbContext context)
         {
@@ -26,6 +27,9 @@ namespace AHTG_Test.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Hospital>>> GetHospital()
         {
+            // simulate some delay in request
+            await Task.Delay(FAKE_DELAY);
+
             return await _context.Hospital.ToListAsync();
         }
 
@@ -97,6 +101,9 @@ namespace AHTG_Test.Controllers
 
             _context.Hospital.Remove(hospital);
             await _context.SaveChangesAsync();
+
+            // simulate some delay in request
+            await Task.Delay(FAKE_DELAY);
 
             return NoContent();
         }
