@@ -29,6 +29,9 @@ namespace AHTG_Test.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Hospital>>> GetHospital()
         {
+            // Even if I have the "is development" check here I still wouldn't do this
+            // in a real production application. This is just a quick way to force
+            // loading spinners in the app
             if (_hostingEnv.IsDevelopment())
             {
                 // simulate some delay in request

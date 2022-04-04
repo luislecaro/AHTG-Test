@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Hospital } from '../hospital.model';
 import { HospitalService } from '../hospital.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-view-hospitals',
@@ -11,6 +12,8 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   styleUrls: ['./view-hospitals.component.css']
 })
 export class ViewHospitalsComponent implements OnInit {
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;  
 
   constructor(
     private hospitalService: HospitalService,
@@ -24,16 +27,20 @@ export class ViewHospitalsComponent implements OnInit {
   displayedColumns: string[] = ['name', 'number-of-employees', 'state', 'actions'];
 
   ngOnInit(): void {
-    
+
     this.getHospitals();
-    
+
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator as MatPaginator;
   }
 
   onDeleteClick(hospital: Hospital) {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: { },
+      data: {},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -42,7 +49,7 @@ export class ViewHospitalsComponent implements OnInit {
       if (shouldDelete) {
         this.delete(hospital);
       }
-    });      
+    });
   }
 
   private getHospitals(): void {
@@ -67,7 +74,7 @@ export class ViewHospitalsComponent implements OnInit {
       (error) => {
         this.isBusy = false;
       }
-    );  
+    );
   }
 
 }
