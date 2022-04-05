@@ -5,6 +5,7 @@ import { HospitalService } from '../hospital.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-view-hospitals',
@@ -13,7 +14,8 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class ViewHospitalsComponent implements OnInit {
 
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private hospitalService: HospitalService,
@@ -24,7 +26,7 @@ export class ViewHospitalsComponent implements OnInit {
   dataSource: MatTableDataSource<Hospital> = new MatTableDataSource();
   hospitals: Hospital[] = [];
 
-  displayedColumns: string[] = ['name', 'number-of-employees', 'state', 'actions'];
+  displayedColumns: string[] = ['name', 'numberOfEmployees', 'addressState', 'actions'];
 
   ngOnInit(): void {
 
@@ -33,7 +35,8 @@ export class ViewHospitalsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator as MatPaginator;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   onDeleteClick(hospital: Hospital) {

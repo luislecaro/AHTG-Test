@@ -30,3 +30,7 @@ button.add-button {
 table {
     width: 100%;
 }
+
+.mat-column-name {
+    width: 350px;
+}

@@ -44,7 +44,7 @@ export class HospitalDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    let stateList = States.List;
+    let stateList = [...States.List];
     stateList.unshift({ code: null, description: '-- Select a state --' });
     this.states = stateList;
 

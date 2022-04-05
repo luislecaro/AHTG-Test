@@ -27,6 +27,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<SeedDataService>();
+builder.Services.AddSingleton<ICache, Cache>();
 
 var app = builder.Build();
 
