@@ -1,36 +1,30 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using AHTG_Test.Data;
 using AHTG_Test.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace AHTG_Test.Controllers
-{    
+{
     [ApiController]
     [Route("api/[controller]")]    
     public class HospitalsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IHospitalRepository _hospitalRepository;
         private readonly IWebHostEnvironment _hostingEnv;
         private readonly ICache _cache;
         private readonly ILogger<HospitalsController> _logger;
 
-        private const int FAKE_DELAY = 2000;
+        private const int FAKE_DELAY = 2000;        
 
-        
-
-        public HospitalsController(ApplicationDbContext context, 
+        public HospitalsController(
+            IHospitalRepository hospitalRepository,
             IWebHostEnvironment hostingEnv, 
             ICache cache,
             ILogger<HospitalsController> logger)
         {
-            _context = context;
+            _hospitalRepository = hospitalRepository;
             _hostingEnv = hostingEnv;
             _cache = cache;
             _logger = logger;
@@ -57,7 +51,7 @@ namespace AHTG_Test.Controllers
                 return hospitals;
             }
 
-            hospitals = await _context.Hospital.ToListAsync();
+            hospitals = await _hospitalRepository.GetHospitalsAsync();
             await _cache.PopulateHospitalsAsync(hospitals);
 
             return hospitals;
@@ -82,7 +76,7 @@ namespace AHTG_Test.Controllers
                 return cachedHospital;
             }
 
-            var hospital = await _context.Hospital.FindAsync(id);            
+            var hospital = await _hospitalRepository.GetHospitalAsync(id);
 
             if (hospital == null)
             {
@@ -95,7 +89,6 @@ namespace AHTG_Test.Controllers
         }
 
         // PUT: api/Hospitals/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHospital(int id, Hospital hospital)
         {
@@ -111,19 +104,17 @@ namespace AHTG_Test.Controllers
             if (id != hospital.ID)
             {
                 return BadRequest();
-            }
-
-            _context.Entry(hospital).State = EntityState.Modified;
+            }            
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _hospitalRepository.UpdateHospitalAsync(id, hospital);
             }
             catch (DbUpdateConcurrencyException ex)
             {
                 _logger.LogError($"Error occurred while updating hospital: {ex}");
 
-                if (!HospitalExists(id))
+                if (!_hospitalRepository.HospitalExists(id))
                 {
                     return NotFound();
                 }
@@ -139,7 +130,6 @@ namespace AHTG_Test.Controllers
         }
 
         // POST: api/Hospitals
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Hospital>> PostHospital(Hospital hospital)
         {
@@ -154,8 +144,7 @@ namespace AHTG_Test.Controllers
 
             try
             {
-                _context.Hospital.Add(hospital);
-                await _context.SaveChangesAsync();                
+                await _hospitalRepository.AddHospitalAsync(hospital);
             }
             catch (Exception ex)
             {
@@ -188,8 +177,7 @@ namespace AHTG_Test.Controllers
 
             try
             {
-                _context.Hospital.Remove(hospital);
-                await _context.SaveChangesAsync();
+                await _hospitalRepository.DeleteHospitalAsync(id);
             }
             catch (Exception ex)
             {
@@ -201,9 +189,6 @@ namespace AHTG_Test.Controllers
             return NoContent();
         }
 
-        private bool HospitalExists(int id)
-        {
-            return _context.Hospital.Any(e => e.ID == id);
-        }
+        
     }
 }
