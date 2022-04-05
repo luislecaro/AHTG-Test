@@ -8,7 +8,7 @@ import { Hospital } from './hospital.model';
 })
 export class HospitalService {
 
-  hospitalsUrl = "api/hospitals";
+  hospitalsUrl = "/api/hospitals";
 
   constructor(private http: HttpClient) {
     

@@ -1,7 +1,9 @@
 <body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container main-content">
-    <router-outlet></router-outlet>
+  <div class="d-flex flex-column sticky-footer-wrapper min-vh-100">
+    <app-nav-menu></app-nav-menu>
+    <div class="container main-content flex-fill">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
   </div>
-  <app-footer></app-footer>
 </body>

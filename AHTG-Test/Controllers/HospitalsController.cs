@@ -1,12 +1,14 @@
 ﻿#nullable disable
 using AHTG_Test.Data;
 using AHTG_Test.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace AHTG_Test.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]    
     public class HospitalsController : ControllerBase

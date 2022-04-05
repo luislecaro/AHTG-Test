@@ -70,7 +70,11 @@ export class ViewHospitalsComponent implements OnInit {
       this.dataSource.data = this.hospitals;
 
       this.isBusy = false;
-    });
+    },
+      (error) => {
+        this.isBusy = false;
+      }
+    );
   }
 
   private delete(hospital: Hospital): void {
