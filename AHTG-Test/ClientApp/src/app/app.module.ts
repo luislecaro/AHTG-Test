@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { HospitalDetailComponent } from './hospital-detail/hospital-detail.component';
 import { ViewHospitalsComponent } from './view-hospitals/view-hospitals.component';
+import { FooterComponent } from './footer/footer.component';
+
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
@@ -25,6 +27,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import { MatSortModule } from '@angular/material/sort';
     HomeComponent,
     ViewHospitalsComponent,
     ConfirmDialogComponent,
-    HospitalDetailComponent
+    HospitalDetailComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -58,7 +62,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatSnackBarModule,
     MatSelectModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatIconModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
