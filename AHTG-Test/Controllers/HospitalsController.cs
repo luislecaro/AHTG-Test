@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AHTG_Test.Data;
 using AHTG_Test.Models;
+using System.Text.Json;
 
 namespace AHTG_Test.Controllers
 {    
@@ -24,7 +25,9 @@ namespace AHTG_Test.Controllers
 
         
 
-        public HospitalsController(ApplicationDbContext context, IWebHostEnvironment hostingEnv, ICache cache,
+        public HospitalsController(ApplicationDbContext context, 
+            IWebHostEnvironment hostingEnv, 
+            ICache cache,
             ILogger<HospitalsController> logger)
         {
             _context = context;
@@ -37,6 +40,8 @@ namespace AHTG_Test.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Hospital>>> GetHospital()
         {
+            _logger.LogDebug($"{nameof(HospitalsController)}: Received request to list all hospitals");
+
             // Even if I have the "is development" check here I still wouldn't do this
             // in a real production application. This is just a quick way to force
             // loading spinners in the demo app
@@ -62,6 +67,8 @@ namespace AHTG_Test.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Hospital>> GetHospital(int id)
         {
+            _logger.LogDebug($"{nameof(HospitalsController)}: Received request to retrieve hospital {id}");
+
             if (_hostingEnv.IsDevelopment())
             {
                 // simulate some delay in request
@@ -92,6 +99,9 @@ namespace AHTG_Test.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHospital(int id, Hospital hospital)
         {
+            _logger.LogDebug($"{nameof(HospitalsController)}: Received request to update hospital {id} with " + 
+                $"info:{Environment.NewLine}{JsonSerializer.Serialize(hospital)}");
+
             if (_hostingEnv.IsDevelopment())
             {
                 // simulate some delay in request
@@ -133,6 +143,9 @@ namespace AHTG_Test.Controllers
         [HttpPost]
         public async Task<ActionResult<Hospital>> PostHospital(Hospital hospital)
         {
+            _logger.LogDebug($"{nameof(HospitalsController)}: Received request to create hospital with " +
+                $"info:{Environment.NewLine}{JsonSerializer.Serialize(hospital)}");
+
             if (_hostingEnv.IsDevelopment())
             {
                 // simulate some delay in request
@@ -159,6 +172,8 @@ namespace AHTG_Test.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHospital(int id)
         {
+            _logger.LogDebug($"{nameof(HospitalsController)}: Received request to delete hospital {id}");
+
             if (_hostingEnv.IsDevelopment())
             {
                 // simulate some delay in request

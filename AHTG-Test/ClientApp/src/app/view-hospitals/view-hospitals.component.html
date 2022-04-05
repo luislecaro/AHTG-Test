@@ -1,5 +1,10 @@
 <h1>List of Hospitals</h1>
 <button mat-flat-button color="primary" class="add-button" routerLink="/hospital-detail">Add new Hospital</button>
+<br />
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput [(ngModel)]="searchKey" placeholder="Filter..." (keyup)="applyFilter()">
+</mat-form-field>
 <div class="loading-indicator" *ngIf="isBusy">
   <mat-spinner [diameter]="50"></mat-spinner>
 </div>

@@ -17,16 +17,19 @@ export class ViewHospitalsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  isBusy = true;
+  dataSource: MatTableDataSource<Hospital> = new MatTableDataSource();
+  hospitals: Hospital[] = [];
+  searchKey: string = "";
+
+  displayedColumns: string[] = ['name', 'numberOfEmployees', 'addressState', 'actions'];
+
   constructor(
     private hospitalService: HospitalService,
     public dialog: MatDialog) {
   }
 
-  isBusy = true;
-  dataSource: MatTableDataSource<Hospital> = new MatTableDataSource();
-  hospitals: Hospital[] = [];
-
-  displayedColumns: string[] = ['name', 'numberOfEmployees', 'addressState', 'actions'];
+  
 
   ngOnInit(): void {
 
@@ -37,6 +40,10 @@ export class ViewHospitalsComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  applyFilter() {
+    this.dataSource.filter = this.searchKey.trim().toLowerCase();
   }
 
   onDeleteClick(hospital: Hospital) {

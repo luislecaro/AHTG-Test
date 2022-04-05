@@ -33,7 +33,7 @@ export class HospitalDetailComponent implements OnInit {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
       phoneNumber: [null, [Validators.required]],
-      numberOfEmployees: [null, [Validators.required]],
+      numberOfEmployees: [null, [Validators.required, Validators.pattern('[1-9][0-9]*')]],
       addressLine1: [null, [Validators.required]],
       addressLine2: [null, [Validators.required]],
       addressCity: [null, [Validators.required]],
